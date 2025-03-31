@@ -1,0 +1,69 @@
+wandb_mode: disabled
+device: cuda
+debug_run: false
+position_fewshot: true
+counterfactual: false # counterfactual result --> always change the result and the below param.
+counterfactual_symbol_result: false # symbol or number
+consistent_counterfactual: false # word or arabic
+counterfactual_symbol_operands: false # run create_dataset.py
+extended_templates: true # evaluates to further_templates
+reversed_fewshot: false # reverse the fewshot example
+
+last_counterfactual: true
+
+acdc_data: false # used to create a dataset for ACDC analysis in different repository
+
+transformers_cache_dir: null
+
+model: EleutherAI/pythia-12b-deduped-v0  # mosaicml/mpt-7b # EleutherAI/gpt-neox-20b # EleutherAI/pythia-12b-deduped-v0 #persimmon # mistralai/Mixtral-8x7B-v0.1 # bigscience/bloomz-7b1 # Qwen/Qwen-14B #facebook/opt-13b #EleutherAI/gpt-j-6b
+#######################
+mpt_data_version_2: false # without minus as operation
+#######################
+
+
+model_ckpt: null
+random_weights: false
+int8: false
+output_dir: ./out
+data_dir: /mnt/qb/work/eickhoff/esx208/arithmetic-lm/data_test
+path_to_entity_dict: ./interventions/entity_dict.json
+lama_path: /path/to/lama/weights
+
+intervention_type: 1
+get_full_distribution: false
+intervention_loc: layer # mixed or double_mixed or all or single_layer_ or layer or attention_layer_output or attention_head_output or attention_head
+effect_type: indirect
+template_type: all
+representation: arabic #words or arabic
+max_n: 20
+examples_per_template: 30
+n_operands: 3
+n_shots: 1
+max_n_vars: null
+all_tokens: true
+
+seed: 0
+
+defaults:
+  - _self_
+  - override hydra/hydra_logging: disabled
+  - override hydra/job_logging: disabled
+
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+
+# nohup python -u math_cma.py > logs/intervention_1_shots_max_20_arabic_layer.log &
+# screen -S run
+# ./run_experiments.sh
+# CTRL + A + D
+# screen -r run
+
+
+# intervention_loc:
+#   - attention_layer_output: override all attention heads in each layer
+#   - attention_head_output: override all attention heads in each layer
+
+# kill process: ps -ef | grep math_cma.py 
+# kill -9 PID
